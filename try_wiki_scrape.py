@@ -34,6 +34,7 @@ def scrape_data(topics):
             extract_nouns(link_content,topic)
         print("--- Finished scraping topic! " + str(topic) + " ----")
 
+        
 def writeToFile():
     with open('wiki_extracts.txt', 'w') as outfile:
         json.dump(topic_to_noun, outfile, indent=4)
