@@ -17,11 +17,20 @@ def extract_nouns(content,topic):
 def scrape_data(topics):
     for topic in topics:
         topic_to_noun[topic] = {}
-        content = wikipedia.WikipediaPage(topic).content
+        try:
+            content = wikipedia.WikipediaPage(topic).content
+        except wikipedia.exceptions.DisambiguationError as e:
+            print("Error: {0}".format(e))
         extract_nouns(content,topic)
-        external_links = wikipedia.WikipediaPage(topic).links
-        for links in external_links:   #follow the links and extract content 
-            link_content = wikipedia.WikipediaPage(links).content
+        try:
+            external_links = wikipedia.WikipediaPage(topic).links
+        except wikipedia.exceptions.DisambiguationError as e:
+            print("Error: {0}".format(e))
+        for links in external_links:   #follow the links and extract content
+            try:
+                link_content = wikipedia.WikipediaPage(links).content
+            except wikipedia.exceptions.DisambiguationError as e:
+                print("Error: {0}".format(e))
             extract_nouns(link_content,topic)
         print("--- Finished scraping topic! " + str(topic) + " ----")
 
